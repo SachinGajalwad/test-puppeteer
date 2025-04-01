@@ -1,6 +1,23 @@
 const nodeHtmlToImage = require("node-html-to-image");
+const puppeteer = require('puppeteer');
 
-// type ImageType = "png" | "jpeg"
+(async () => {
+    console.log('Checking Puppeteer default executable path...');
+    console.log('Default path:', puppeteer.executablePath());
+  
+    const browser = await puppeteer.launch({
+      headless: true,
+      executablePath: puppeteer.executablePath(),
+    });
+  
+    console.log('Puppeteer successfully launched!');
+    
+    const page = await browser.newPage();
+    await page.goto('https://example.com');
+    console.log('Page loaded successfully!');
+  
+    await browser.close();
+  })();
 
 const html = `<style data-mantine-styles="classes">
     @media (max-width: 35.99375em) {

@@ -5,6 +5,8 @@ const path = require('path');
 
 (async () => {
     try {
+        console.log('vhjedsbjhd',puppeteer.executablePath());
+        
         const chromePath = path.resolve('/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome-linux64/chrome');
         console.log('Chrome Path:', chromePath);
 

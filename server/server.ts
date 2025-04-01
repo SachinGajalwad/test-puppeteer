@@ -5,6 +5,8 @@ require("dotenv").config();
 const app = express()
 
 app.get("/scrape", async(req:any, res:any) => {
+  console.log(process.env.PUPPETEER_EXECUTABLE_PATH,process.env.NODE_ENV,process.env);
+  
     const browser = await puppeteer.launch({
         args: [
           "--disable-setuid-sandbox",

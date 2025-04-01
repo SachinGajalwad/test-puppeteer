@@ -1,14 +1,17 @@
 const nodeHtmlToImage = require("node-html-to-image");
 
 const puppeteer = require('puppeteer');
+const path = require('path');
 
 (async () => {
     try {
-        console.log('Launching Puppeteer...');
+        const chromePath = path.resolve('/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome-linux64/chrome');
+        console.log('Chrome Path:', chromePath);
 
         const browser = await puppeteer.launch({ 
             headless: true, 
-            args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+            executablePath: chromePath,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
 
         console.log('Browser launched successfully.');
@@ -24,9 +27,6 @@ const puppeteer = require('puppeteer');
 
         await browser.close();
         console.log('Browser closed.');
-        
-        // If you want to save or use the buffer
-        // You can return or do something with the buffer here.
     } catch (error:any) {
         console.error('Error occurred:', error.message);
         if (error.stack) {

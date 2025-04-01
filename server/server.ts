@@ -1,5 +1,6 @@
 const express = require("express");
 const puppeteer = require("puppeteer");
+require("dotenv").config();
 
 const app = express()
 
@@ -11,7 +12,9 @@ app.get("/scrape", async(req:any, res:any) => {
           "--single-process",
           "--no-zygote",
         ],
-        executablePath:'/usr/bin/google-chrome-stable',
+        executablePath: process.env.NODE_ENV === "production"
+        ? process.env.PUPPETEER_EXECUTABLE_PATH
+        : puppeteer.executablePath(),
       });
       try {
         const page = await browser.newPage();

@@ -3,7 +3,7 @@ const puppeteer = require("puppeteer");
 
 const app = express()
 
-app.get("/scrape", async(req, res) => {
+app.get("/scrape", async(req:any, res:any) => {
     const browser = await puppeteer.launch({
         args: [
           "--disable-setuid-sandbox",

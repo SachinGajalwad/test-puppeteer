@@ -7,7 +7,7 @@ const app = express()
 async function generateHelloWorldScreenshot() {
     puppeteer.use(StealthPlugin())
 
-    const browser = await puppeteer.launch({ headless: true })
+    const browser = await puppeteer.launch({ headless: true ,args: ["--no-sandbox", "--disable-setuid-sandbox"]})
     const page = await browser.newPage()
 
     // Set page content with <h1>Hello World</h1>

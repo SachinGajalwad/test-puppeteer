@@ -27,7 +27,7 @@ const puppeteer = require('puppeteer');
         
         // If you want to save or use the buffer
         // You can return or do something with the buffer here.
-    } catch (error) {
+    } catch (error:any) {
         console.error('Error occurred:', error.message);
         if (error.stack) {
             console.error('Stack Trace:', error.stack);

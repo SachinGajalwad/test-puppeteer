@@ -1,57 +1,26 @@
 const express = require("express");
-const puppeteer = require("puppeteer");
-require("dotenv").config();
+const puppeteer = require("puppeteer-core");
+const chromium = require("chromium");
 
-const app = express()
+const app = express();
 
-app.get("/scrape", async(req:any, res:any) => {
-  console.log(process.env.PUPPETEER_EXECUTABLE_PATH,process.env.NODE_ENV,process.env);
-  
-    const browser = await puppeteer.launch({
-        args: [
-          "--disable-setuid-sandbox",
-          "--no-sandbox",
-          "--single-process",
-          "--no-zygote",
-        ],
-        executablePath: process.env.NODE_ENV === "production"
-        ? process.env.PUPPETEER_EXECUTABLE_PATH
-        : puppeteer.executablePath(),
-      });
-      try {
+app.get("/", async (req: any, res: any) => {
+    try {
+        const browser = await puppeteer.launch({
+            executablePath: chromium.path,
+            headless: "new",
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        });
+
         const page = await browser.newPage();
-    
         await page.goto("https://developer.chrome.com/");
-    
-        // Set screen size
-        await page.setViewport({ width: 1080, height: 1024 });
-    
-        // Type into search box
-        await page.type(".search-box__input", "automate beyond recorder");
-    
-        // Wait and click on first result
-        const searchResultSelector = ".search-box__link";
-        await page.waitForSelector(searchResultSelector);
-        await page.click(searchResultSelector);
-    
-        // Locate the full title with a unique string
-        const textSelector = await page.waitForSelector(
-          "text/Customize and automate"
-        );
-        const fullTitle = await textSelector.evaluate((el:any) => el.textContent);
-    
-        // Print the full title
-        const logStatement = `The title of this blog post is ${fullTitle}`;
-        console.log(logStatement);
-        res.send(logStatement);
-      } catch (e:any) {
-        console.error(e);
-        res.send(`Something went wrong while running Puppeteer: ${e}`);
-      } finally {
+        const title = await page.title();
+
         await browser.close();
-      }
+        res.json({ title });
+    } catch (error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
+    }
 });
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000")
-})
+app.listen(8080, () => console.log("Server running on port 8080"));

@@ -1,7 +1,15 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 const nodeHtmlToImage = require("node-html-to-image");
-
 // type ImageType = "png" | "jpeg"
-
 const html = `<style data-mantine-styles="classes">
     @media (max-width: 35.99375em) {
         .mantine-visible-from-xs {
@@ -136,7 +144,7 @@ const html = `<style data-mantine-styles="classes">
         </div>
     </div>
 </div>
-`
+`;
 const mantineStyles = `
     <style data-mantine-styles="classes">
         .mantine-Stack-root {
@@ -189,8 +197,8 @@ const mantineStyles = `
             margin: 0;
         }
     </style>
-`
-const htmlToPng = async () => {
+`;
+const htmlToPng = () => __awaiter(void 0, void 0, void 0, function* () {
     const fullHtml = `
   <!DOCTYPE html>
   <html>
@@ -224,7 +232,7 @@ const htmlToPng = async () => {
       ${html}
   </body>
   </html>
-`
+`;
     const imageOptions = {
         html: fullHtml,
         type: "png",
@@ -233,41 +241,35 @@ const htmlToPng = async () => {
         width: 800,
         height: 600,
         backgroundColor: "#ffffff",
-    }
-    const buffer = (await nodeHtmlToImage(imageOptions))
-    return buffer
-}
-
+    };
+    const buffer = (yield nodeHtmlToImage(imageOptions));
+    return buffer;
+});
 // Importing required modules
 const express = require('express');
 const app = express();
-
 // Middleware to parse JSON request body
 app.use(express.json());
-
 // Sample endpoint to fetch user data
-app.get('/api/users', (req: any, res: { json: (arg0: { id: number; name: string; email: string; }[]) => void; }) => {
+app.get('/api/users', (req, res) => {
     const users = [
         { id: 1, name: 'John Doe', email: 'john@example.com' },
         { id: 2, name: 'Jane Doe', email: 'jane@example.com' }
     ];
-
     res.json(users); // Sending a response with the users data
 });
-
 // Sample endpoint to add a new user
-app.get('/get-image', (req: any, res: { setHeader: (arg0: string, arg1: string) => void; send: (arg0: any) => void; status: (arg0: number) => { (): any; new(): any; send: { (arg0: string): void; new(): any; }; }; }) => {
+app.get('/get-image', (req, res) => {
     htmlToPng()
         .then((buffer) => {
-            res.setHeader('Content-Type', 'image/png');
-            res.send(buffer);
-        })
+        res.setHeader('Content-Type', 'image/png');
+        res.send(buffer);
+    })
         .catch((error) => {
-            console.error('Error:', error);
-            res.status(500).send('Internal Server Error');
-        });
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    });
 });
-
 // Server listening on port 3000
 app.listen(3000, () => {
     console.log('Server running on http://localhost:3000');

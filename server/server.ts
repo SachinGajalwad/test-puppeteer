@@ -10,6 +10,10 @@ puppeteer.use(StealthPlugin())
 const captureImage = async (fullHtml: string) => {
   const browser = await puppeteer.launch({
     headless: true,
+    args: ['--disable-web-security',
+        '--disable-features=IsolateOrigins,TrackingProtection3pcd',
+        '--disable-site-isolation-trials'
+    ]
   })
   const page = await browser.newPage()
 

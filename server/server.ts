@@ -256,8 +256,8 @@ const htmlToPng = async () => {
         height: 600,
         backgroundColor: "#ffffff",
         puppeteer: {
-            // executablePath:
-            //   "/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome",
+            executablePath:
+              "/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome",
               headless: true,
               args: ["--no-sandbox", "--disable-setuid-sandbox"],
           }

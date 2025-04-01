@@ -14,7 +14,7 @@ const captureImage = async (fullHtml: string) => {
         '--disable-features=IsolateOrigins,TrackingProtection3pcd',
         '--disable-site-isolation-trials'
     ],
-    executablePath:'/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome-linux64/chrome'
+    executablePath: puppeteerExtra.executablePath()
   })
   const page = await browser.newPage()
 

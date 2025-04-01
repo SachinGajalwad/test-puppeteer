@@ -1,13 +1,15 @@
 const nodeHtmlToImage = require("node-html-to-image");
 const puppeteer = require('puppeteer');
 
+
 (async () => {
+  try {
     console.log('Checking Puppeteer default executable path...');
     console.log('Default path:', puppeteer.executablePath());
   
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath:'/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome',
+      executablePath: '/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome',
     });
   
     console.log('Puppeteer successfully launched!');
@@ -17,7 +19,10 @@ const puppeteer = require('puppeteer');
     console.log('Page loaded successfully!');
   
     await browser.close();
-  })();
+  } catch (error) {
+    console.error('Error occurred:', error.message);
+  }
+})();
 
 const html = `<style data-mantine-styles="classes">
     @media (max-width: 35.99375em) {
@@ -250,6 +255,10 @@ const htmlToPng = async () => {
         width: 800,
         height: 600,
         backgroundColor: "#ffffff",
+        puppeteer: {
+            executablePath:
+              "/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome",
+          }
     }
     const buffer = (await nodeHtmlToImage(imageOptions))
     return buffer

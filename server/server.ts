@@ -1,28 +1,28 @@
 const nodeHtmlToImage = require("node-html-to-image");
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer');
 
 
-(async () => {
-  try {
-    console.log('Checking Puppeteer default executable path...');
-    console.log('Default path:', puppeteer.executablePath());
+// (async () => {
+//   try {
+//     console.log('Checking Puppeteer default executable path...');
+//     console.log('Default path:', puppeteer.executablePath());
   
-    const browser = await puppeteer.launch({
-      headless: true,
-      executablePath: '/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome',
-    });
+//     const browser = await puppeteer.launch({
+//       headless: true,
+//       executablePath: '/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome',
+//     });
   
-    console.log('Puppeteer successfully launched!');
+//     console.log('Puppeteer successfully launched!');
     
-    const page = await browser.newPage();
-    await page.goto('https://example.com');
-    console.log('Page loaded successfully!');
+//     const page = await browser.newPage();
+//     await page.goto('https://example.com');
+//     console.log('Page loaded successfully!');
   
-    await browser.close();
-  } catch (error) {
-    console.error('Error occurred:', error.message);
-  }
-})();
+//     await browser.close();
+//   } catch (error) {
+//     console.error('Error occurred:', error.message);
+//   }
+// })();
 
 const html = `<style data-mantine-styles="classes">
     @media (max-width: 35.99375em) {

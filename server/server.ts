@@ -4,7 +4,7 @@ const chromium = require("chromium");
 
 const app = express();
 
-app.get("/", async (req: any, res: any) => {
+app.get("/test", async (req: any, res: any) => {
     try {
         const browser = await puppeteer.launch({
             executablePath: chromium.path,

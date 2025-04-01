@@ -258,6 +258,8 @@ const htmlToPng = async () => {
         puppeteer: {
             executablePath:
               "/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome",
+              headless: true,
+              args: ["--no-sandbox", "--disable-setuid-sandbox"],
           }
     }
     const buffer = (await nodeHtmlToImage(imageOptions))

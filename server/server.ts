@@ -11,6 +11,7 @@ app.get("/test", async (req: any, res: any) => {
             headless: "new",
             args: ["--no-sandbox", "--disable-setuid-sandbox"],
         });
+console.log(chromium.path);
 
         const page = await browser.newPage();
         await page.goto("https://developer.chrome.com/");

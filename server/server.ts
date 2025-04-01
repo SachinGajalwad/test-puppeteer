@@ -33,13 +33,13 @@ app.get("/scrape", async(req, res) => {
         const textSelector = await page.waitForSelector(
           "text/Customize and automate"
         );
-        const fullTitle = await textSelector.evaluate((el) => el.textContent);
+        const fullTitle = await textSelector.evaluate((el:any) => el.textContent);
     
         // Print the full title
         const logStatement = `The title of this blog post is ${fullTitle}`;
         console.log(logStatement);
         res.send(logStatement);
-      } catch (e) {
+      } catch (e:any) {
         console.error(e);
         res.send(`Something went wrong while running Puppeteer: ${e}`);
       } finally {

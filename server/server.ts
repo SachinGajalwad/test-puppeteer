@@ -1,60 +1,58 @@
 const nodeHtmlToImage = require("node-html-to-image");
-
-const puppeteer = require('puppeteer');
+const puppeteerExtra = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+// const nodeHtmlToImage = require("node-html-to-image");
+const puppeteer = require('puppeteer-extra');
 const path = require('path');
 
-(async () => {
-    try {
-        console.log('vhjedsbjhd',puppeteer.executablePath());
-        
-        const chromePath = path.resolve('/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome-linux64/chrome');
-        console.log('Chrome Path:', chromePath);
+puppeteer.use(StealthPlugin())
 
-        const browser = await puppeteer.launch({ 
-            headless: true, 
-            executablePath: chromePath,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
+const captureImage = async (fullHtml: string) => {
+  const browser = await puppeteer.launch({
+    headless: true,
+  })
+  const page = await browser.newPage()
 
-        console.log('Browser launched successfully.');
+  await page.setContent(fullHtml)
 
-        const page = await browser.newPage();
-        console.log('New page created.');
+  // Set your image options here
+  const imageOptions = {
+    type: "png",
+    quality: 100,
+    width: 800,
+    height: 600,
+    backgroundColor: "#ffffff",
+  }
 
-        await page.setContent("<h1>HI</h1>");
-        console.log('Page content set.');
+  // Capture the screenshot and save as a buffer
+  const buffer: Buffer = await page.screenshot({
+    type: imageOptions.type,
+    // quality: imageOptions.quality,
+    fullPage: true,
+    omitBackground: true,
+  })
 
-        const buffer = await page.screenshot({ type: 'png', fullPage: true });
-        console.log('Screenshot taken.');
-
-        await browser.close();
-        console.log('Browser closed.');
-    } catch (error:any) {
-        console.error('Error occurred:', error.message);
-        if (error.stack) {
-            console.error('Stack Trace:', error.stack);
-        }
-    }
-})();
-// const puppeteer = require('puppeteer');
+  await browser.close()
+  return buffer
+}
 
 
 // (async () => {
 //   try {
 //     console.log('Checking Puppeteer default executable path...');
 //     console.log('Default path:', puppeteer.executablePath());
-  
+
 //     const browser = await puppeteer.launch({
 //       headless: true,
 //       executablePath: '/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome',
 //     });
-  
+
 //     console.log('Puppeteer successfully launched!');
-    
+
 //     const page = await browser.newPage();
 //     await page.goto('https://example.com');
 //     console.log('Page loaded successfully!');
-  
+
 //     await browser.close();
 //   } catch (error) {
 //     console.error('Error occurred:', error.message);
@@ -284,23 +282,27 @@ const htmlToPng = async () => {
   </body>
   </html>
 `
-    const imageOptions = {
-        html: fullHtml,
-        type: "png",
-        quality: 100,
-        pixelRatio: 2,
-        width: 800,
-        height: 600,
-        backgroundColor: "#ffffff",
-        puppeteer: {
-            executablePath:
-              "/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome-linux64/chrome",
-              headless: true,
-              args: ["--no-sandbox", "--disable-setuid-sandbox"],
-          }
-    }
-    const buffer = (await nodeHtmlToImage(imageOptions))
-    return buffer
+    // const imageOptions = {
+    //     html: fullHtml,
+    //     type: "png",
+    //     quality: 100,
+    //     pixelRatio: 2,
+    //     width: 800,
+    //     height: 600,
+    //     backgroundColor: "#ffffff",
+    //     puppeteer: {
+    //         // executablePath:
+    //         //     "/Users/pst-macair-23a/.cache/puppeteer/chrome/mac_arm-134.0.6998.35/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing",
+    //         headless: true,
+    //         args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    //         launchOptions: {
+    //             executablePath: puppeteerExtra.executablePath(), // Use puppeteer-extra executablePath
+    //         }
+    //     }
+    // }
+    // const buffer = (await nodeHtmlToImage(imageOptions))
+    // return buffer
+    return captureImage(fullHtml)
 }
 
 // Importing required modules

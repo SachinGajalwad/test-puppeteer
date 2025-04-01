@@ -13,7 +13,8 @@ const captureImage = async (fullHtml: string) => {
     args: ['--disable-web-security',
         '--disable-features=IsolateOrigins,TrackingProtection3pcd',
         '--disable-site-isolation-trials'
-    ]
+    ],
+    executablePath:'/opt/render/.cache/puppeteer/chrome/linux-134.0.6998.35/chrome-linux64/chrome'
   })
   const page = await browser.newPage()
 

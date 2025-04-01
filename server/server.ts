@@ -1,17 +1,17 @@
 const express = require("express");
 const puppeteer = require("puppeteer-core");
-const chromium = require("chromium");
+// const chromium = require("chromium");
 
 const app = express();
 
 app.get("/test", async (req: any, res: any) => {
     try {
         const browser = await puppeteer.launch({
-            executablePath: chromium.path,
+            executablePath: '/opt/render/project/src/server/node_modules/chromium/lib/chromium/chrome-linux/chrome',
             headless: "new",
             args: ["--no-sandbox", "--disable-setuid-sandbox"],
         });
-console.log(chromium.path);
+// console.log(chromium.path);
 
         const page = await browser.newPage();
         await page.goto("https://developer.chrome.com/");

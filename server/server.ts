@@ -1,39 +1,51 @@
 import express from "express"
-import puppeteer from "puppeteer-extra"
-import StealthPlugin from "puppeteer-extra-plugin-stealth"
+const puppeteer = require("puppeteer");
 
 const app = express()
 
-async function generateHelloWorldScreenshot() {
-    puppeteer.use(StealthPlugin())
-
-    const browser = await puppeteer.launch({ headless: true ,args: ["--no-sandbox", "--disable-setuid-sandbox"]})
-    const page = await browser.newPage()
-
-    // Set page content with <h1>Hello World</h1>
-    await page.setContent(`<html><body><h1>Hello World</h1></body></html>`, {
-        waitUntil: "domcontentloaded",
-    })
-
-    const imageBuffer = await page.screenshot({ type: "png" })
-
-    await browser.close()
-    return imageBuffer
-}
-
-// API endpoint to generate and return the screenshot buffer
-app.get("/generate-hello-world-image", async (req: express.Request, res: express.Response) => {
-    console.log(req);
-
-    try {
-        const imageBuffer = await generateHelloWorldScreenshot()
-        res.setHeader("Content-Type", "image/png")
-        res.send(imageBuffer)
-    } catch (error) {
-        console.error("Error generating Hello World image:", error)
-        res.status(500).send("Failed to generate image")
-    }
-})
+app.get("/scrape", (req, res) => {
+    const browser = await puppeteer.launch({
+        args: [
+          "--disable-setuid-sandbox",
+          "--no-sandbox",
+          "--single-process",
+          "--no-zygote",
+        ],
+        executablePath:'/usr/bin/google-chrome-stable',
+      });
+      try {
+        const page = await browser.newPage();
+    
+        await page.goto("https://developer.chrome.com/");
+    
+        // Set screen size
+        await page.setViewport({ width: 1080, height: 1024 });
+    
+        // Type into search box
+        await page.type(".search-box__input", "automate beyond recorder");
+    
+        // Wait and click on first result
+        const searchResultSelector = ".search-box__link";
+        await page.waitForSelector(searchResultSelector);
+        await page.click(searchResultSelector);
+    
+        // Locate the full title with a unique string
+        const textSelector = await page.waitForSelector(
+          "text/Customize and automate"
+        );
+        const fullTitle = await textSelector.evaluate((el) => el.textContent);
+    
+        // Print the full title
+        const logStatement = `The title of this blog post is ${fullTitle}`;
+        console.log(logStatement);
+        res.send(logStatement);
+      } catch (e) {
+        console.error(e);
+        res.send(`Something went wrong while running Puppeteer: ${e}`);
+      } finally {
+        await browser.close();
+      }
+});
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000")

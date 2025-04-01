@@ -1,4 +1,39 @@
 const nodeHtmlToImage = require("node-html-to-image");
+
+const puppeteer = require('puppeteer');
+
+(async () => {
+    try {
+        console.log('Launching Puppeteer...');
+
+        const browser = await puppeteer.launch({ 
+            headless: true, 
+            args: ['--no-sandbox', '--disable-setuid-sandbox'] 
+        });
+
+        console.log('Browser launched successfully.');
+
+        const page = await browser.newPage();
+        console.log('New page created.');
+
+        await page.setContent("<h1>HI</h1>");
+        console.log('Page content set.');
+
+        const buffer = await page.screenshot({ type: 'png', fullPage: true });
+        console.log('Screenshot taken.');
+
+        await browser.close();
+        console.log('Browser closed.');
+        
+        // If you want to save or use the buffer
+        // You can return or do something with the buffer here.
+    } catch (error) {
+        console.error('Error occurred:', error.message);
+        if (error.stack) {
+            console.error('Stack Trace:', error.stack);
+        }
+    }
+})();
 // const puppeteer = require('puppeteer');
 
 

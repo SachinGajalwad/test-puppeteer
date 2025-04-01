@@ -32,7 +32,7 @@ const puppeteer = require("puppeteer-core");
 const app = express();
 const CHROME_PATH = "/usr/bin/google-chrome-stable";
 
-app.get("/test", async (req, res) => {
+app.get("/test", async (req:any, res:any) => {
     try {
         const browser = await puppeteer.launch({
             executablePath: CHROME_PATH,
@@ -46,7 +46,7 @@ app.get("/test", async (req, res) => {
 
         await browser.close();
         res.json({ title });
-    } catch (error) {
+    } catch (error:any) {
         res.status(500).json({ error: error.message || "Unknown error" });
     }
 });

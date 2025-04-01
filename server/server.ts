@@ -7,7 +7,7 @@ const puppeteer = require('puppeteer');
   
     const browser = await puppeteer.launch({
       headless: true,
-      executablePath: puppeteer.executablePath(),
+      executablePath:'/opt/render/.cache/puppeteer/chrome/linux-128.0.6613.119/chrome-linux64/chrome',
     });
   
     console.log('Puppeteer successfully launched!');

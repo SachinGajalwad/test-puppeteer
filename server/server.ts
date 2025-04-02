@@ -28,17 +28,17 @@
 
 const express = require("express");
 const puppeteer = require("puppeteer-core");
-const { execSync } = require("child_process");
+// const { execSync } = require("child_process");
 const chromium = require("chromium");
 const app = express();
 // const CHROME_PATH = "/usr/bin/google-chrome-stable";
 
-try {
-    const chromePath = execSync("which google-chrome-stable").toString().trim();
-    console.log("Google Chrome Path:", chromePath);
-} catch (error:any) {
-    console.error("Google Chrome not found:", error.message);
-}
+// try {
+//     const chromePath = execSync("which google-chrome-stable").toString().trim();
+//     console.log("Google Chrome Path:", chromePath);
+// } catch (error:any) {
+//     console.error("Google Chrome not found:", error.message);
+// }
 app.get("/test", async (req:any, res:any) => {
     try {
         const browser = await puppeteer.launch({
